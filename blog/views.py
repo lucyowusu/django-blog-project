@@ -5,17 +5,18 @@ This code should be copied and pasted into your blog/views.py file before you be
 
 from django.template import Context, loader
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
 
 from models import Post, Comment 
 
 
 def post_list(request):
-    post_list = Post.objects.all()
-    
-    print type(post_list)
-    print post_list
-    
-    return HttpResponse(post_list)
+    posts = Post.objects.all()
+    t = loader.get_template('blog/post_list.html')
+    c = Context({'posts':posts })
+    return HttpResponse(t.render(c))
+
+
 
 def post_detail(request, id, showComments=False):
     print id
@@ -24,8 +25,9 @@ def post_detail(request, id, showComments=False):
 
         for eachcomment in Comment.objects.filter(id=id):
 		comment = eachcomment.body
-    html = "<html><body><b>Post:</b><br/> %s <br/> <b>Comments:</b><br/> %s</body> </html>" %(post_item,comment)
-    return HttpResponse(html)
+   # html = "<html><body><b>Post:</b><br/> %s <br/> <b>Comments:</b><br/> %s</body> </html>" %(post_item,comment)
+
+    return render_to_response('blog/post_detail.html',{'post': post, 'comments':comment})
 
 
     
@@ -34,9 +36,9 @@ def post_search(request, term):
     found_item = Post.objects.filter(body__contains=term)
     for everyitem in found_item:
         found += str(everyitem.title)
-    return HttpResponse(found)
+    return render_to_response('blog/post_search.html',{'posts':found,'term':term})
     
 
 def home(request):
-    print 'it works'
-    return HttpResponse('hello world. Ete zene?') 
+	return render_to_response('blog/base.html',{})
+

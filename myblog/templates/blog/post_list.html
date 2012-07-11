@@ -1,0 +1,19 @@
+{%extends "blog/base.html" %}
+
+
+
+{%block content%}
+{% for post in posts %}
+
+
+
+{{ post.title }}
+<ul>
+   <li> Created: {{ post.created }}
+   Last updated: {{ post.updated }}
+    {{ post.body_first_60 }}
+ </li>
+</ul>
+
+{% endfor %} 
+{%endblock%}

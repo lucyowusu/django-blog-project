@@ -1,0 +1,24 @@
+{% extends "blog/base.html" %}
+
+{%block content%}
+
+{%for post in posts%}
+
+post Title: {{post.title}}
+post Body:{{post.body}}
+post Creation:{{post.creation}}
+post Update:{{post.update}}
+
+{%endfor%}
+
+
+{%for eachcomment in comments%}
+
+Author: {{eachcomment.author}}
+Body:{{eachcomment.body}}
+Creation:{{eachcomment.creation}}
+Update:{{eachcomment.update}}
+
+{%endfor%}
+{%endblock%}
+
