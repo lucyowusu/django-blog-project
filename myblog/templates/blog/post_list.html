@@ -7,9 +7,10 @@
 
 
 
-{{ post.title }}
+
 <ul>
-   <li> Created: {{ post.created }}
+   <li> Tittle: <a href ="../posts/{{post.id}}">{{ post.title }}</a>
+Created: {{ post.created }}
    Last updated: {{ post.updated }}
     {{ post.body_first_60 }}
  </li>

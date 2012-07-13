@@ -7,6 +7,11 @@ from django.template import Context, loader
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 
+from django.forms import ModelForm
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseRedirect
+
+
 from models import Post, Comment 
 
 
@@ -17,17 +22,33 @@ def post_list(request):
     return HttpResponse(t.render(c))
 
 
+class CommentForm(ModelForm):
+	class Meta:
+		model=Comment
+		exclude=['post']
 
-def post_detail(request, id, showComments=False):
-    print id
+
+@csrf_exempt
+def post_detail(request, id, showComments=False): 
     post_item = Post.objects.get(pk=id)
+    if request.method == 'POST':
+       comment = Comment(post=post_item)
+       form = CommentForm(request.POST,instance=comment)
+       if form.is_valid():
+            form.save()
+	    return HttpResponseRedirect(request.path)
+    else:
+	form = CommentForm()
+
+   
     if showComments !=False:
+        comment=Comment.objects.filter(post_id=id)
 
-        for eachcomment in Comment.objects.filter(id=id):
-		comment = eachcomment.body
-   # html = "<html><body><b>Post:</b><br/> %s <br/> <b>Comments:</b><br/> %s</body> </html>" %(post_item,comment)
-
-    return render_to_response('blog/post_detail.html',{'post': post, 'comments':comment})
+        tt = loader.get_template('blog/post_detail.html')
+        cc = Context({'comments':comment })
+    else:
+        pass
+    return render_to_response('blog/post_detail.html',{'post': post_item, 'comments':comment,'form':form})
 
 
     

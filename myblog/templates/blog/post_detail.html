@@ -2,14 +2,14 @@
 
 {%block content%}
 
-{%for post in posts%}
+
 
 post Title: {{post.title}}
 post Body:{{post.body}}
 post Creation:{{post.creation}}
 post Update:{{post.update}}
 
-{%endfor%}
+
 
 
 {%for eachcomment in comments%}
@@ -19,6 +19,25 @@ Body:{{eachcomment.body}}
 Creation:{{eachcomment.creation}}
 Update:{{eachcomment.update}}
 
+<div>
+<a href="/blog/posts/{{posts.id }}/edit">
+Edit Comment
+</a>
+</div>
+
+
 {%endfor%}
+
+<h3>New comment:</h3>
+
+<div>
+<form method='post' action="">
+{{ form.as_p }}
+<input type='submit' name='Submit'>
+</form>
+</div>
+
+
+
 {%endblock%}
 
