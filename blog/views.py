@@ -25,7 +25,7 @@ def post_list(request):
 class CommentForm(ModelForm):
 	class Meta:
 		model=Comment
-		exclude=['post']
+		exclude=['post']#,'author']
 
 
 @csrf_exempt
